@@ -1,0 +1,66 @@
+@import "../../style/_colors.scss";
+
+.cpu {
+    background: $dark;
+    color: $light;
+    padding: 8px 0;
+
+    .counter,
+    .register {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 16px;
+    }
+
+    .counter {
+        margin-bottom: 24px;
+        padding: 8px 16px;
+        position: relative;
+
+        &::after { /* separator line */
+            content: "";
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            top: 100%;
+            border-bottom: 1px solid $light;
+            transform: translate(8px);
+        }
+    }
+
+    label { margin-right: 8px; }
+
+    input[type=text] {
+        -webkit-appearance: none;
+        display: inline-block;
+        background: none;
+        border: none;
+        color: $white;
+        border-radius: 3px;
+        padding: 4px 8px;
+        margin: 2px;
+        font-family: "Roboto Mono", monospace;
+        font-size: 16px;
+
+        width: 2ch;
+        box-sizing: content-box;
+        
+        &:focus {
+          border: 2px solid $highlight;
+          margin: 0;
+          outline: none;
+          
+          & + label {
+            color: $highlight;
+          }
+        }
+
+        &.highlight-output,
+        &.highlight-input {
+            border-width: 2px;
+            margin: 0;
+        }
+    }
+}

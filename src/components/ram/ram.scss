@@ -1,0 +1,47 @@
+@import "../../style/_colors.scss";
+
+.ram {
+    flex-grow: 1;
+    padding: 14px 0;
+
+    .row {
+        display: flex;
+        align-items: center;
+        padding: 2px 16px;
+
+        &.is-active {
+            position: relative;
+    
+            &::before {
+                content: "";
+                position: absolute;
+                width: 0;
+                height: 0;
+                left: 0;
+                top: 50%;
+                transform: translateY(-8px);
+                border: 8px solid transparent;
+                border-right: none;
+                border-left-color: $highlight;
+            }
+        }
+    }
+
+    .index {
+        opacity: 0.5;
+        font-size: 12px;
+        font-family: "Roboto Mono", monospace;
+    }
+
+    .comment {
+        background: none;
+        padding: 4px 8px;
+        flex-grow: 1;
+        font-family: "Roboto", sans-serif;
+        margin-left: 16px;
+        border-radius: 0;
+        border: none;
+        border-bottom: 2px solid mix($dark, $light, 10%);
+        text-overflow: ellipsis;
+    }
+}

@@ -1,0 +1,92 @@
+@import "../../style/_colors.scss";
+
+.toolbar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: stretch;
+  padding: 0 8px;
+  background: $black;
+  color: $light;
+  font-size: 14px;
+  
+  button, a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background: none;
+    min-width: 64px;
+    padding: 8px 16px;
+    color: inherit;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    
+    span { display: block; }
+    
+    &:hover, &:focus {
+      background: rgba($light, 0.1);
+      outline: none;
+    }
+    &:active {
+      > * {
+        transition: transform .1s;
+        transform: translateY(1px);
+      }
+    }
+  }
+  
+  .play-speed {
+    padding: 8px 8px;
+    text-align: center;
+    input { display: block; }
+  }
+  
+  .separator {
+    position: relative;
+    margin-right: 16px;
+    &::after {
+      content: "";
+      position: absolute;
+      left: 100%;
+      top: 12px;
+      bottom: 12px;
+      width: 1px;
+      background: $light;
+      transform: translateX(8px);
+      pointer-events: none;
+    }
+  }
+  
+  .filler {
+    flex-grow: 1;
+
+    &,
+    span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      padding: 0 32px;
+
+      > svg { margin-right: 8px; }
+    }
+    span {
+      /* color: $info; */
+
+      &.error {
+        color: $highlight;
+      }
+      &.loader {
+        color: $white;
+        svg { animation: loader 0.75s cubic-bezier(.42,.2,.58,.8) infinite; }
+      }
+    }
+  }
+}
+
+@keyframes loader {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

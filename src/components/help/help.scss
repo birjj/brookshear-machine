@@ -1,0 +1,41 @@
+@import "../../style/_colors.scss";
+@import url("https://cdn.rawgit.com/dreampulse/computer-modern-web-font/master/font/Serif/cmun-serif.css");
+
+.help-container {
+    overflow-x: hidden;
+}
+.help {
+    padding: 16px 32px;
+    background: $white;
+    font-family: "Computer Modern Serif", serif;
+    font-size: 18px;
+    box-shadow: -2px 0 16px rgba($dark, 0.1);
+    border-left: 1px solid mix($dark, $light, 25%);
+
+    animation: slide-in .2s ease-out;
+    
+    h1,h2,h3 {
+        text-align: center;
+    }
+    
+    table {
+        max-width: 60ch;
+    }
+    td:nth-child(-n+2), em {
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+    td,th {
+        padding: 4px 8px;
+        vertical-align: top;
+    }
+    th:last-child {
+        text-align: left;
+    }
+}
+
+@keyframes slide-in {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(0%); }
+}
