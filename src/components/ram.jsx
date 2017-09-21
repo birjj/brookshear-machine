@@ -14,7 +14,6 @@ class RAM extends Component {
     onRamChange(i, val) {
         machine.ram[i] = val[0];
         machine.ram[i + 1] = val[1];
-        console.log("Setting ram", i, "to", val, machine.ram[i]);
     }
 
     @action

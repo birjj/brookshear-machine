@@ -58,7 +58,6 @@ class Cell extends Component {
             (v, i) => {
                 if (prevProps[i] !== v) {
                     if (this.lastEmitted[i] !== v) {
-                        console.log("Setting value to", v);
                         this.$inps[i].value = this.formatValue(v);
                     }
                 }

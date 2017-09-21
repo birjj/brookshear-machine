@@ -1,5 +1,6 @@
 import { observable, computed } from "mobx";
-import { toHex, fromHex, toBitString } from "./utils";
+import { toHex, fromHex, toBitString,
+    floatToHex, hexToFloat } from "./utils";
 
 class BrookshearMachine {
     @observable speed = 5;
@@ -123,32 +124,44 @@ class BrookshearMachine {
             this.cpu[register] = (
                 this.cpu[parseInt(operands[1], 16)]
                 + this.cpu[parseInt(operands[2], 16)]
-            ) % 128;
+            ) % 256;
             this.messages = [
-                { text: `Added register ${operands[1]} and register ${operands[2]}, put in register ${operands[0]}` },
+                { text: `Added register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}` },
             ];
         } else if (opcode === "6") {
-            // TODO: implement
+            const floats = [1, 2].map(
+                v => hexToFloat(
+                    toHex(
+                        this.cpu[parseInt(operands[v], 16)]
+                    )
+                )
+            );
+            this.cpu[register] = (
+                fromHex(floatToHex(floats[0] + floats[1]))
+            );
+            this.messages = [
+                { text: `Added register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}` },
+            ];
         } else if (opcode === "7") {
             this.cpu[register] =
                 this.cpu[parseInt(operands[1], 16)] // eslint-disable-line no-bitwise
                 | this.cpu[parseInt(operands[2], 16)];
             this.messages = [
-                { text: `OR register ${operands[1]} and register ${operands[2]}, put in register ${operands[0]}` },
+                { text: `OR of register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}` },
             ];
         } else if (opcode === "8") {
             this.cpu[register] =
                 this.cpu[parseInt(operands[1], 16)] // eslint-disable-line no-bitwise
                 & this.cpu[parseInt(operands[2], 16)];
             this.messages = [
-                { text: `AND register ${operands[1]} and register ${operands[2]}, put in register ${operands[0]}` },
+                { text: `AND of register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}` },
             ];
         } else if (opcode === "9") {
             this.cpu[register] =
                 this.cpu[parseInt(operands[1], 16)] // eslint-disable-line no-bitwise
                 ^ this.cpu[parseInt(operands[2], 16)];
             this.messages = [
-                { text: `XOR register ${operands[1]} and register ${operands[2]}, put in register ${operands[0]}` },
+                { text: `XOR of register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}` },
             ];
         } else if (opcode === "A") {
             const bitstring = toBitString(this.cpu[register]);

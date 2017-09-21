@@ -31,43 +31,7 @@ export function fromHex(str) {
     if (str.length > 2) {
         console.warn("Attempted to convert out-of-bounds string", str); // eslint-disable-line no-console
     }
-    return parseInt(str, 16);
-}
-
-/**
- * Given a value, returns the 8-bit string that represents it in two's-complement notation
- */
-export function toTwosBitString(value) {
-    if (value < -128 || value > 127) {
-        console.warn("Attempted to convert out-of-bounds value", value); // eslint-disable-line no-console
-    }
-    const offset = value < 0 ? -128 : 0;
-    const sign = value < 0 ? "1" : "0";
-    const val = (value - offset);
-    return sign + val.toString(2).padStart(7, "0");
-}
-
-/**
- * Given a value, returns the two-character hex representation in two's-complement notation
- */
-export function toTwosHex(value) {
-    if (value < -128 || value > 127) {
-        console.warn("Attempted to convert out-of-bounds value", value); // eslint-disable-line no-console
-    }
-    const bitstring = toTwosBitString(value);
-    return (
-        parseInt(bitstring.substr(0, 4), 2).toString(16)
-        + parseInt(bitstring.substr(4, 4), 2).toString(16)
-    ).toUpperCase();
-}
-
-/**
- * Given a hex string, returns its value interpreted in two's-complement notation
- */
-export function fromTwosHex(str) {
-    const bitstring = parseInt(str, 16).toString(2).padStart(4 * str.length, "0");
-    const offset = bitstring[0] === "1" ? -(2 ** (bitstring.length - 1)) : 0;
-    return offset + parseInt(bitstring.substr(1), 2);
+    return parseInt(str, 16) || 0;
 }
 
 /**
@@ -88,8 +52,27 @@ export function hexToFloat(hex) {
 }
 
 /**
- * Given a value, converts it to a bit string
+ * Given a value, returns its hex string float representation
  */
+export function floatToHex(value) {
+    const decimalStr = Math.abs(value).toString(2);
+    const first1 = decimalStr.indexOf("1");
+    const dot = decimalStr.indexOf(".");
+    const exp = dot - first1 - (dot > first1 ? 1 : 0);
+    const normalizedStr = decimalStr.replace(".", "");
+    const mantissa = normalizedStr.substr(
+        normalizedStr.indexOf("1") + 1,
+        4
+    ).padEnd(4, "0");
+
+    const bitstring = (
+        (value < 0 ? "1" : "0")
+        + (exp + 4).toString(2).padStart(3, "0")
+        + mantissa
+    );
+
+    return toHex(parseInt(bitstring, 2));
+}
 
 /**
  * Given two values (in total a byte), returns an auto-generated comment for them
