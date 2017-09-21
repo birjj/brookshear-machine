@@ -3,8 +3,10 @@
 
 .help-container {
     overflow-x: hidden;
+    max-width: 70ch;
 }
 .help {
+    width: 100%;
     padding: 16px 32px;
     background: $white;
     font-family: "Computer Modern Serif", serif;

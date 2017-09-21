@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { toHex, fromHex } from "../utils";
 
 /** @augments {Component<{onChange: function, value: number}, {}>} */
 class TwoByteInput extends Component {
@@ -21,6 +22,7 @@ class TwoByteInput extends Component {
         this.lastEmitted = props.value;
         this.onInputChange = this.onInputChange.bind(this);
         this.onInputBlur = this.onInputBlur.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -34,14 +36,29 @@ class TwoByteInput extends Component {
         }
     }
 
-    onInputChange(event) {
-        const value = this.formatInput(event.target.value);
+    onKeyDown(e) {
+        let newValue;
+        if (e.keyCode === 40) { // ArrowDown
+            newValue = this.lastEmitted - 1;
+        } else if (e.keyCode === 38) { // ArrowUp
+            newValue = this.lastEmitted + 1;
+        }
+
+        if (newValue !== undefined) {
+            newValue = ((2 ** 8) + newValue) % (2 ** 8);
+            this.$inp.value = this.formatValue(newValue);
+            this.emit(newValue);
+        }
+    }
+
+    onInputChange() {
+        const value = this.formatInput(this.$inp.value);
         this.$inp.value = value;
-        this.emit(parseInt(value, 16));
+        this.emit(fromHex(value));
     }
 
     onInputBlur(event) {
-        const value = parseInt(this.formatInput(event.target.value), 16) || 0;
+        const value = fromHex(this.formatInput(event.target.value));
         this.$inp.value = this.formatValue(value);
         this.emit(value);
     }
@@ -64,9 +81,7 @@ class TwoByteInput extends Component {
     }
 
     formatValue(num) {
-        return num.toString(16)
-            .padStart(2, "0")
-            .toUpperCase();
+        return toHex(num);
     }
 
     render() {
@@ -77,6 +92,7 @@ class TwoByteInput extends Component {
                 defaultValue={this.formatValue(this.props.value)}
                 onChange={this.onInputChange}
                 onBlur={this.onInputBlur}
+                onKeyDown={this.onKeyDown}
                 id={this.props.id}
                 ref={(inp) => { this.$inp = inp; }}
                 maxLength={2}

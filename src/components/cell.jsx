@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { toHex } from "../utils";
+import { toHex, fromHex } from "../utils";
 import "./cell/cell.css";
 
 /** @augments {Component<{ids: string[], values: number[]}, {}>} */
@@ -58,6 +58,7 @@ class Cell extends Component {
             (v, i) => {
                 if (prevProps[i] !== v) {
                     if (this.lastEmitted[i] !== v) {
+                        console.log("Setting value to", v);
                         this.$inps[i].value = this.formatValue(v);
                     }
                 }
@@ -70,14 +71,14 @@ class Cell extends Component {
         this.$inps[index].value = value;
 
         const outp = [...this.lastEmitted];
-        outp[index] = parseInt(value, 16) || 0;
+        outp[index] = fromHex(value);
         this.emit(outp);
     }
 
     onInputBlur(index) {
         this.setState({ focused: false });
         const $inp = this.$inps[index];
-        const value = parseInt(this.formatInput($inp.value), 16) || 0;
+        const value = fromHex($inp.value);
         $inp.value = this.formatValue(value);
 
         const outp = [...this.lastEmitted];
@@ -103,9 +104,7 @@ class Cell extends Component {
     }
 
     formatValue(num) {
-        return num.toString(16)
-            .padStart(2, "0")
-            .toUpperCase();
+        return toHex(num);
     }
 
     render() {

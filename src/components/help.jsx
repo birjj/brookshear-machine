@@ -13,9 +13,9 @@ class Help extends Component {
             /* 5 */ ["RST", (<span>Add the content of register <em>S</em> and register <em>T</em>, and put the result in register <em>R</em>.
                 Data is interpreted as integers in two&#x27;s-complement notation.</span>)],
             /* 6 */ ["RST", (<span>Add the content of register <em>S</em> and register <em>T</em>, and put the result in register <em>R</em>.
-                Data is interpreted as integers in floating decimal notation.</span>)],
-            /* 7 */ ["RST", (<span>Bitwise OR (∧) the content of register <em>S</em> and <em>T</em>, and put the result in register <em>R</em>.</span>)],
-            /* 8 */ ["RST", (<span>Bitwise AND (∨) the content of register <em>S</em> and <em>T</em>, and put the result in register <em>R</em>.</span>)],
+                Data is interpreted as floats in floating point notation.</span>)],
+            /* 7 */ ["RST", (<span>Bitwise OR (∨) the content of register <em>S</em> and <em>T</em>, and put the result in register <em>R</em>.</span>)],
+            /* 8 */ ["RST", (<span>Bitwise AND (∧) the content of register <em>S</em> and <em>T</em>, and put the result in register <em>R</em>.</span>)],
             /* 9 */ ["RST", (<span>Bitwise XOR (⊕) the content of register <em>S</em> and <em>T</em>, and put the result in register <em>R</em>.</span>)],
             /* A */ ["RxX", (<span>Rotate the content of register <em>R</em> cyclically right <em>X</em> steps.</span>)],
             /* B */ ["RXY", (<span>Jump to instruction in RAM cell <em>XY</em> if the content of register <em>R</em> equals the content of register <em>0</em>.</span>)],
@@ -54,6 +54,12 @@ class Help extends Component {
                 <div className="help">
                     <h1>Operations Set</h1>
                     { this.generateTable() }
+
+                    <h2>Floating point</h2>
+                    <p>The floating point notation used by this machine uses
+                        1 bit for sign (0 for positive, 1 for negative),
+                        3 bits for the exponent (excess notation) and
+                        4 mantisse bits (the bits following the first &quot;1&quot; bit).</p>
                 </div>
             </div>
         );

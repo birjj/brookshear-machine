@@ -35,7 +35,7 @@ if (localStorage) {
                     console.log("Saving to localStorage"); // eslint-disable-line no-console
                     localStorage.setItem("brookshear", JSON.stringify(brookshearProgram));
                 },
-                500
+                2500
             );
         }
     );

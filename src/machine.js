@@ -1,5 +1,5 @@
 import { observable, computed } from "mobx";
-import { toHex } from "./utils";
+import { toHex, fromHex, toBitString } from "./utils";
 
 class BrookshearMachine {
     @observable speed = 5;
@@ -35,7 +35,7 @@ class BrookshearMachine {
             case "4":
                 return {
                     inputs: { cpu: [parsed[2]], ram: [] },
-                    outputs: { cpu: [], ram: [parsed[3]] },
+                    outputs: { cpu: [parsed[3]], ram: [] },
                 };
             case "5":
             case "6":
@@ -91,40 +91,106 @@ class BrookshearMachine {
         const register = parseInt(operands[0], 16);
 
         this.messages = [];
-        let success = true;
-        switch (opcode) {
-            case "0":
-                this.playing = false;
+        let proceed = true;
+
+        if (opcode === "0") {
+            this.playing = false;
+            this.messages = [
+                { text: "Opcode not found. Halting", type: "error" },
+            ];
+            proceed = false;
+        } else if (opcode === "1") {
+            this.cpu[register] = this.ram[ramTarget];
+            this.messages = [
+                { text: `Copied from cell ${operands.substring(1)} to register ${operands[0]}` },
+            ];
+        } else if (opcode === "2") {
+            this.cpu[register] = fromHex(operands.substr(1));
+            this.messages = [
+                { text: `Set content of register ${operands[0]} to ${operands.substring(1)}` },
+            ];
+        } else if (opcode === "3") {
+            this.ram[ramTarget] = this.cpu[register];
+            this.messages = [
+                { text: `Copied from register ${operands[0]} to cell ${operands.substring(1)}` },
+            ];
+        } else if (opcode === "4") {
+            this.cpu[parseInt(operands[2], 16)] = this.cpu[parseInt(operands[1], 16)];
+            this.messages = [
+                { text: `Copied from register ${operands[1]} to register ${operands[2]}` },
+            ];
+        } else if (opcode === "5") {
+            this.cpu[register] = (
+                this.cpu[parseInt(operands[1], 16)]
+                + this.cpu[parseInt(operands[2], 16)]
+            ) % 128;
+            this.messages = [
+                { text: `Added register ${operands[1]} and register ${operands[2]}, put in register ${operands[0]}` },
+            ];
+        } else if (opcode === "6") {
+            // TODO: implement
+        } else if (opcode === "7") {
+            this.cpu[register] =
+                this.cpu[parseInt(operands[1], 16)] // eslint-disable-line no-bitwise
+                | this.cpu[parseInt(operands[2], 16)];
+            this.messages = [
+                { text: `OR register ${operands[1]} and register ${operands[2]}, put in register ${operands[0]}` },
+            ];
+        } else if (opcode === "8") {
+            this.cpu[register] =
+                this.cpu[parseInt(operands[1], 16)] // eslint-disable-line no-bitwise
+                & this.cpu[parseInt(operands[2], 16)];
+            this.messages = [
+                { text: `AND register ${operands[1]} and register ${operands[2]}, put in register ${operands[0]}` },
+            ];
+        } else if (opcode === "9") {
+            this.cpu[register] =
+                this.cpu[parseInt(operands[1], 16)] // eslint-disable-line no-bitwise
+                ^ this.cpu[parseInt(operands[2], 16)];
+            this.messages = [
+                { text: `XOR register ${operands[1]} and register ${operands[2]}, put in register ${operands[0]}` },
+            ];
+        } else if (opcode === "A") {
+            const bitstring = toBitString(this.cpu[register]);
+            const offset = fromHex(operands[2]);
+            const rotated = bitstring.substr(-offset)
+                + bitstring.substr(0, (8 - offset) % 8);
+
+            this.cpu[register] = fromHex(parseInt(rotated, 2).toString(16));
+            this.messages = [
+                { text: `Rotated register ${operands[0]} ${operands[2]} places to the right` },
+            ];
+        } else if (opcode === "B") {
+            if (this.cpu[register] === this.cpu[0]) {
+                this.frame = parseInt(operands.substr(1), 16);
                 this.messages = [
-                    { text: "Opcode not found. Halting", type: "error" },
+                    { text: `Jumped to ${operands.substr(1)}` },
                 ];
-                success = false;
-                break;
-            case "1":
-                this.cpu[register] = this.ram[ramTarget];
+                proceed = false;
+            }
+        } else if (opcode === "C") {
+            this.playing = false;
+            this.messages = [
+                { text: "Halted" },
+            ];
+            proceed = false;
+        } else if (opcode === "D") {
+            if (this.cpu[register] > this.cpu[0]) {
+                this.frame = parseInt(operands.substr(1), 16);
                 this.messages = [
-                    { text: `Copied from cell ${operands.substring(1)} to register ${operands[0]}` },
+                    { text: `Jumped to ${operands.substr(1)}` },
                 ];
-                break;
-            case "2":
-                this.cpu[register] = ramTarget;
-                break;
-            case "3":
-                this.ram[ramTarget] = this.cpu[register];
-                break;
-            case "4":
-                this.cpu[parseInt(operands[2], 16)] = this.cpu[parseInt(operands[1], 16)];
-                break;
-            default:
-                this.playing = false;
-                this.messages = [
-                    { text: "Unknown opcode found. Halting", type: "error" },
-                ];
-                success = false;
-                break;
+                proceed = false;
+            }
+        } else {
+            this.playing = false;
+            this.messages = [
+                { text: "Unknown opcode found. Halting", type: "error" },
+            ];
+            proceed = false;
         }
 
-        if (success) {
+        if (proceed) {
             this.frame += 2;
         }
     }

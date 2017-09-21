@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { action } from "mobx";
+
 import machine from "../machine";
 import TwoByte from "./two-byte-inp";
 import "./cpu/cpu.css";
+import { toHex } from "../utils";
 
 /** @augments {Component<{}, {}>} */
 @observer
@@ -47,7 +49,7 @@ class CPU extends Component {
                         onChange={this.updateRegister.bind(this, i)} // eslint-disable-line
                         value={machine.cpu[i]}
                     />
-                    <label htmlFor={id}>Register {i.toString(16).toUpperCase()}:</label>
+                    <label htmlFor={id}>Register {toHex(i)}:</label>
                 </div>
             );
         }

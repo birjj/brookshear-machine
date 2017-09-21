@@ -5,7 +5,7 @@ import { action } from "mobx";
 import "./ram/ram.css";
 import machine from "../machine";
 import Cell from "./cell";
-import { toHex, indexToComment } from "../utils";
+import { indexToComment } from "../utils";
 
 /** @augments {Component<{}, {}>} */
 @observer
@@ -14,6 +14,7 @@ class RAM extends Component {
     onRamChange(i, val) {
         machine.ram[i] = val[0];
         machine.ram[i + 1] = val[1];
+        console.log("Setting ram", i, "to", val, machine.ram[i]);
     }
 
     @action
@@ -25,8 +26,8 @@ class RAM extends Component {
         const cells = [];
         for (let i = 0; i < 2 ** 8; i += 2) {
             const j = i;
-            const index = toHex(i);
-            const index2 = toHex(i + 1);
+            const index = i.toString(16).padStart(2, "0").toUpperCase();
+            const index2 = (i + 1).toString(16).padStart(2, "0").toUpperCase();
             const isActive = machine.frame === i || machine.frame === i + 1;
             const classNames = [
                 [
