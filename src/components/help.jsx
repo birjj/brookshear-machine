@@ -59,7 +59,20 @@ class Help extends Component {
                     <p>The floating point notation used by this machine uses
                         1 bit for sign (0 for positive, 1 for negative),
                         3 bits for the exponent (excess notation) and
-                        4 mantisse bits (the bits following the first &quot;1&quot; bit).</p>
+                        4 mantissa bits (the bits following the first &quot;1&quot; bit).</p>
+
+                    <h2>GUI</h2>
+                    <p>The machine uses several GUI elements:</p>
+                    <ul>
+                        <li>The program counter arrow (<span className="counter-arrow" />)
+                            - this shows which command will be executed next.</li>
+                        <li>Input highlights (<span className="highlight-input highlight-example" />)
+                            - this shows from which registers or cells data will be read when
+                            the next command is executed.</li>
+                        <li>Output higlights (<span className="highlight-output highlight-example" />)
+                            - this shows which registers or cells will receive data when the
+                            next command is executed.</li>
+                    </ul>
                 </div>
             </div>
         );

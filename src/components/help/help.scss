@@ -35,6 +35,26 @@
     th:last-child {
         text-align: left;
     }
+
+    .counter-arrow {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        left: 0;
+        border: 8px solid transparent;
+        border-right: none;
+        border-left-color: $highlight;
+        vertical-align: middle;
+        margin: 0 4px;
+    }
+    .highlight-example {
+        display: inline-block;
+        height: 1.2em;
+        width: 2em;
+        border-radius: 3px;
+        vertical-align: middle;
+        margin: 0 4px;
+    }
 }
 
 @keyframes slide-in {
