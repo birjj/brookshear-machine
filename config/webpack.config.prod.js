@@ -127,6 +127,7 @@ module.exports = {
           },
         ],
         include: paths.appSrc,
+        exclude: /registerServiceWorker\.js$/,
       },
       {
         // "oneOf" will traverse all following loaders until one will
