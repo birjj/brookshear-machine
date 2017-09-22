@@ -1,3 +1,4 @@
+import LZString from "lz-string";
 import machine from "./machine";
 
 /**
@@ -130,4 +131,61 @@ export function indexToComment(index) {
         machine.ram[index],
         machine.ram[index + 1],
     ]);
+}
+
+/**
+ * Given a string, loads it into RAM
+ * @param {String} data  The data to load
+ * @param {Boolean} compressed Whether the data is compressed
+ */
+export function importData(data, compressed) {
+    let formattedData = data;
+    if (compressed) {
+        formattedData = LZString.decompressFromEncodedURIComponent(data);
+    }
+
+    // insert newlines as needed
+    if (compressed) {
+        formattedData = formattedData.replace(/(.{4}(;[^;]*;)?)/g, "$1\n");
+    }
+
+    const lines = formattedData.split("\n");
+    machine.comments.fill("");
+    machine.ram.fill(0);
+    lines.forEach(
+        (v, i) => {
+            if (!v) { return; }
+
+            const index = i * 2;
+            const comment = (/;(.+);$/.exec(v) || [])[1] || "";
+            machine.comments[i] = comment;
+            machine.ram[index] = fromHex(v.substr(0, 2) || "00");
+            machine.ram[index + 1] = fromHex(v.substr(2, 2) || "00");
+        }
+    );
+}
+
+/**
+ * Exports the RAM to a string
+ * @param {Boolean} compressed  Whether the string should be compressed
+ * @returns {String}
+ */
+export function exportData(compressed) {
+    let outp = "";
+    for (let i = 0; i < machine.ram.length; i += 2) {
+        outp += toHex(machine.ram[i]) + toHex(machine.ram[i + 1]);
+        if (machine.comments[i / 2]) {
+            outp += `;${machine.comments[i / 2]};`;
+        }
+        if (!compressed) {
+            outp += "\n";
+        }
+    }
+
+    outp = outp.replace(/^\s*|\s*$/g, "");
+    outp = outp.replace(/(0{4}\n?)*$/, "");
+
+    return compressed ?
+        LZString.compressToEncodedURIComponent(outp)
+        : outp;
 }

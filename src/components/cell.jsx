@@ -56,9 +56,10 @@ class Cell extends Component {
     componentDidUpdate(prevProps) {
         this.props.values.forEach(
             (v, i) => {
-                if (prevProps[i] !== v) {
+                if (prevProps.values[i] !== v) {
                     if (this.lastEmitted[i] !== v) {
                         this.$inps[i].value = this.formatValue(v);
+                        this.lastEmitted[i] = v;
                     }
                 }
             }

@@ -1,0 +1,73 @@
+@import "../../style/_colors.scss";
+
+.modal {
+    position: fixed;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+
+    background: $dark;
+    z-index: 999;
+    color: $light;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 100vh;
+    overflow-y: auto;
+
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .close {
+        align-self: flex-end;
+        -webkit-appearance: none;
+        background: none;
+        border: none;
+        color: $light;
+        cursor: pointer;
+        outline: none;
+
+        svg { width: 32px; height: 32px; }
+
+        &:active, &:focus { color: $highlight; }
+    }
+
+    .submit {
+        padding: 8px 16px;
+        border: 2px solid mix($dark, $highlight, 25%);
+        background: $highlight;
+        color: $dark;
+        border-radius: 0 0 3px 3px;
+        cursor: pointer;
+    }
+
+    textarea {
+        border: 2px solid mix($dark, $light, 25%);
+        border-bottom-width: 0px;
+        background: $light;
+        color: $dark;
+        outline: none;
+        border-radius: 3px 3px 0 0;
+        resize: none;
+        width: 80ch;
+        height: 10em;
+        max-height: 50vh;
+        padding: 1em;
+        font-family: "Roboto Mono", monospace;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+        &:active, &:focus {
+            border-color: $highlight;
+        }
+
+        &[readonly] {
+            border-bottom-width: 2px;
+            border-radius: 3px;
+            border-color: $highlight;
+            background: none;
+            color: $light;
+        }
+    }
+}

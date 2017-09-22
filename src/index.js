@@ -1,13 +1,40 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { autorun } from "mobx";
+
 import App from "./components/app";
 import machine from "./machine";
+import "./load";
+import { importData, exportData } from "./utils";
 import registerServiceWorker from "./registerServiceWorker";
+
+// handle our URL updating
+if (history && history.replaceState) {
+    autorun(
+        () => {
+            const newData = exportData(true);
+            history.replaceState("", "", `#${newData}`);
+        }
+    );
+
+    window.addEventListener("popstate",
+        () => {
+            const existingData = window.location.hash.substr(1);
+            if (existingData) {
+                importData(existingData, true);
+            }
+        }
+    );
+}
 
 // save our data to local storage when it changes
 // also loads existing data
 if (localStorage) {
+    // exceptions are usually caused by faulty content. Make sure user can reload
+    window.onerror = () => {
+        localStorage.clear();
+    };
+
     const SAVE_PROPS = [
         "speed",
         "frame",
@@ -39,26 +66,6 @@ if (localStorage) {
             );
         }
     );
-
-    const oldProgram = localStorage.getItem("brookshear");
-    if (oldProgram) {
-        const program = JSON.parse(oldProgram);
-        Object.keys(program)
-            .forEach(
-                (key) => {
-                    const val = program[key];
-                    if (val instanceof Array) {
-                        val.forEach(
-                            (v, i) => {
-                                machine[key][i] = v;
-                            }
-                        );
-                    } else {
-                        machine[key] = val;
-                    }
-                }
-            );
-    }
 }
 
 ReactDOM.render(

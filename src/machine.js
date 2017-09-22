@@ -7,6 +7,7 @@ class BrookshearMachine {
     @observable playing = false;
     @observable frame = 0;
     @observable showingHelp = false;
+    @observable showingModal = "";
     @observable cpu = Array(16).fill(0);
     @observable ram = Array(2 ** 8).fill(0);
     @observable comments = Array((2 ** 8) / 2).fill(""); // only 1 comment per 2 ram places
@@ -88,7 +89,7 @@ class BrookshearMachine {
         const opcode = command[0];
         const operands = command.substring(1);
 
-        const ramTarget = parseInt(operands.substring(1), 16);
+        const ramTarget = fromHex(operands.substr(1));
         const register = parseInt(operands[0], 16);
 
         this.messages = [];

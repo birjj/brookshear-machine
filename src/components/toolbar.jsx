@@ -35,6 +35,12 @@ class Toolbar extends Component {
             case "help":
                 machine.showingHelp = !machine.showingHelp;
                 break;
+            case "import":
+                machine.showingModal = "import";
+                break;
+            case "export":
+                machine.showingModal = "export";
+                break;
             default:
                 break;
         }
