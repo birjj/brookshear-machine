@@ -141,7 +141,7 @@ class Toolbar extends Component {
                 (
                     <a
                         key="github"
-                        href="https://google.com"
+                        href="https://github.com/birjolaxew/brookshear-machine"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
