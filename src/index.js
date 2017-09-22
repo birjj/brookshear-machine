@@ -10,10 +10,17 @@ import registerServiceWorker from "./registerServiceWorker";
 
 // handle our URL updating
 if (history && history.replaceState) {
+    let urlTimeout;
     autorun(
         () => {
+            clearTimeout(urlTimeout);
             const newData = exportData(true);
-            history.replaceState("", "", `#${newData}`);
+            setTimeout(
+                () => {
+                    history.replaceState("", "", `#${newData}`);
+                },
+                2500
+            );
         }
     );
 
