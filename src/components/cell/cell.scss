@@ -24,9 +24,11 @@
             border-left-width: 1px;
         }
 
-        &.highlight-input,
+        &.highlight-input {
+            background: mix($input, $white, 35%) !important;
+        }
         &.highlight-output {
-            background: mix($info, $white, 35%) !important;
+            background: mix($output, $white, 35%) !important;
         }
     }
 }

@@ -31,14 +31,14 @@ body {
 
 .faint { opacity: 0.66; }
 .highlight-input {
-  border-color: $info !important;
+  border-color: $input !important;
   border-style: dashed !important;
-  background: rgba($info, 0.25) !important;
+  background: rgba($input, 0.25) !important;
 }
 .highlight-output {
-  border-color: $info !important;
+  border-color: $output !important;
   border-style: solid !important;
-  background: rgba($info, 0.25) !important;
+  background: rgba($output, 0.25) !important;
 }
 
 input[type=text] {
