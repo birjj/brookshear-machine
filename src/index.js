@@ -19,7 +19,7 @@ if (history && history.replaceState) {
                 () => {
                     history.replaceState("", "", `#${newData}`);
                 },
-                2500
+                500
             );
         }
     );

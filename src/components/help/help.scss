@@ -3,7 +3,9 @@
 
 .help-container {
     overflow-x: hidden;
-    max-width: 70ch;
+    width: 70ch;
+    max-width: 50vw;
+    min-width: 30ch;
 }
 .help {
     width: 100%;
