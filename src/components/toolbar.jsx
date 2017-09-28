@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { action } from "mobx";
+import swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.css";
 import Icon from "./icon";
 import machine from "../machine";
 import "./toolbar/toolbar.css";
@@ -31,6 +33,21 @@ class Toolbar extends Component {
                 machine.frame = 0;
                 machine.cpu.fill(0);
                 machine.messages = [];
+                break;
+            case "delete":
+                swal({
+                    title: "Are you sure?",
+                    text: "This will delete your program for all of eternity",
+                    type: "warning",
+                    confirmButtonColor: "#d33",
+                    confirmButtonText: "Reset",
+                    showCancelButton: true,
+                }).then(
+                    () => {
+                        machine.ram.fill(0);
+                        machine.comments.fill("");
+                    }
+                ).catch(() => {});
                 break;
             case "help":
                 machine.showingHelp = !machine.showingHelp;
@@ -128,6 +145,7 @@ class Toolbar extends Component {
 
         const elements = [
             ...([
+                { text: "Reset RAM", icon: "delete" },
                 { text: "Import", icon: "import" },
                 { text: "Export", icon: "export", separator: true },
                 { text: "Reset CPU", icon: "reset" },

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 const icons = {
+    delete: (<path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />),
     reset: (<path fill="currentColor" d="M12,5V1L7,6L12,11V7A6,6 0 0,1 18,13A6,6 0 0,1 12,19A6,6 0 0,1 6,13H4A8,8 0 0,0 12,21A8,8 0 0,0 20,13A8,8 0 0,0 12,5Z" />),
     play: (<path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z" />),
     pause: (<path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z" />),
@@ -20,7 +21,7 @@ class Icon extends Component {
     static propTypes = {
         icon: PropTypes.oneOf([
             "reset", "play", "step", "pause",
-            "import", "export",
+            "delete", "import", "export",
             "help", "github", "alert", "load",
             "close",
         ]).isRequired,

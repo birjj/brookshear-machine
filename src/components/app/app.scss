@@ -117,3 +117,23 @@ input[type=range] {
     }
   }
 }
+
+.swal2-modal {
+  width: 400px !important;
+  min-height: 0px !important;
+
+  .swal2-icon {
+    width: 40px;
+    height: 40px;
+    margin: 10px auto;
+    
+    &.swal2-warning {
+      line-height: 40px;
+      font-size: 30px;
+    }
+  }
+
+  .swal2-confirm {
+    margin-top: 0;
+  }
+}
