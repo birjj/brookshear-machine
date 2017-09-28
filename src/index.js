@@ -17,7 +17,7 @@ if (history && history.replaceState) {
             const newData = exportData(true);
             urlTimeout = setTimeout(
                 () => {
-                    history.replaceState("", "", `#${newData}`);
+                    history.replaceState("", "", newData !== "Q" ? `#${newData}` : "#");
                 },
                 500
             );
