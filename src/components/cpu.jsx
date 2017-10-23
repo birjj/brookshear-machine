@@ -49,7 +49,7 @@ class CPU extends Component {
                         onChange={this.updateRegister.bind(this, i)} // eslint-disable-line
                         value={machine.cpu[i]}
                     />
-                    <label htmlFor={id}>Register {toHex(i)}:</label>
+                    <label htmlFor={id}>Register {toHex(i, 1)}:</label>
                 </div>
             );
         }

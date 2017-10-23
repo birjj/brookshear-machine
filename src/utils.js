@@ -4,25 +4,26 @@ import machine from "./machine";
 /**
  * Given a value, returns the 8-bit string that represents it as a positive integer
  */
-export function toBitString(value) {
+export function toBitString(value, minBytes = 2) {
     if (value < 0 || value > 255) {
         console.warn("Attempted to convert out-of-bounds value", value); // eslint-disable-line no-console
     }
-    return value.toString(2).padStart(8, "0").substr(-8);
+    return value.toString(2).padStart(minBytes * 4, "0").substr(-8);
 }
 
 /**
  * Given a value, returns the hex that represents it as a positive integer
  */
-export function toHex(value) {
+export function toHex(value, minLen = 2) {
     if (value < 0 || value > 255) {
         console.warn("Attempted to convert out-of-bounds value", value); // eslint-disable-line no-console
     }
-    const bitstring = toBitString(value);
-    return (
-        parseInt(bitstring.substr(0, 4), 2).toString(16)
-        + parseInt(bitstring.substr(4, 4), 2).toString(16)
-    ).toUpperCase();
+    const bitstring = toBitString(value, minLen);
+    let outp = "";
+    for (let i = 0; i < bitstring.length; i += 4) {
+        outp += parseInt(bitstring.substr(i, 4), 2).toString(16);
+    }
+    return outp.toUpperCase();
 }
 
 /**
@@ -82,7 +83,7 @@ export function floatToHex(value) {
  */
 export function byteToComment(values) {
     const str = values
-        .map(toHex)
+        .map(v => toHex(v))
         .join("");
 
     switch (str[0]) {
