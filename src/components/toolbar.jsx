@@ -127,7 +127,7 @@ class Toolbar extends Component {
         return (
             <button
                 key={btn.icon}
-                className={btn.separator ? "separator" : ""}
+                className={`btn-${btn.icon} ${btn.separator ? "separator" : ""}`}
                 onClick={() => this.onAction(btn.icon)}
             >
                 <Icon icon={btn.icon} />
@@ -158,6 +158,7 @@ class Toolbar extends Component {
                 { text: (machine.showingHelp ? "Hide" : "Help"), icon: "help" },
                 (
                     <a
+                        className="btn-github"
                         key="github"
                         href="https://github.com/birjolaxew/brookshear-machine"
                         target="_blank"

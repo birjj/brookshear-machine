@@ -84,6 +84,14 @@
       }
     }
   }
+
+  @media (max-width: 720px) {
+    .btn-github,
+    .filler { display: none; }
+  }
+  @media (max-width: 512px) {
+    flex-wrap: wrap;
+  }
 }
 
 @keyframes loader {

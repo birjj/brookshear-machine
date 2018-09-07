@@ -23,9 +23,13 @@ body {
     overflow-y: auto;
     flex-shrink: 0;
   }
-  
-  @media screen and (max-width: 550px) {
-    flex-direction: column;
+}
+@media screen and (max-width: 550px) {
+  .emulator { flex-direction: column; }
+
+  .app {
+    height: auto;
+    min-height: 100vh;
   }
 }
 
