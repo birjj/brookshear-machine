@@ -15,7 +15,7 @@ class ImportModal extends Component {
             (v, i) => {
                 const index = i * 2;
                 const comment = (/;(.+)/.exec(v) || [])[1] || "";
-                machine.comments[i] = comment;
+                machine.comments[i] = comment.replace(/;$/, "");
                 machine.ram[index] = fromHex(v.substr(0, 2) || "00");
                 machine.ram[index + 1] = fromHex(v.substr(2, 2) || "00");
             }
