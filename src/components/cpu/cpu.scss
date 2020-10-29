@@ -19,7 +19,8 @@
         padding: 8px 16px;
         position: relative;
 
-        &::after { /* separator line */
+        &::after {
+            /* separator line */
             content: "";
             position: absolute;
             left: 16px;
@@ -30,9 +31,11 @@
         }
     }
 
-    label { margin-right: 8px; }
+    label {
+        margin-right: 8px;
+    }
 
-    input[type=text] {
+    input[type="text"] {
         -webkit-appearance: none;
         display: inline-block;
         background: none;
@@ -46,15 +49,15 @@
 
         width: 2ch;
         box-sizing: content-box;
-        
+
         &:focus {
-          border: 2px solid $highlight;
-          margin: 0;
-          outline: none;
-          
-          & + label {
-            color: $highlight;
-          }
+            border: 2px solid $highlight;
+            margin: 0;
+            outline: none;
+
+            & + label {
+                color: $highlight;
+            }
         }
 
         &.highlight-output,

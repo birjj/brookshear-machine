@@ -1,22 +1,23 @@
-import React, { Component } from "react";
+import React, { ChangeEvent, Component } from "react";
 import PropTypes from "prop-types";
 import { toHex, fromHex } from "../utils";
 
-/** @augments {Component<{onChange: function, value: number}, {}>} */
-class TwoByteInput extends Component {
-    static propTypes = {
-        onChange: PropTypes.func.isRequired,
-        value: PropTypes.number,
-        id: PropTypes.string,
-        className: PropTypes.string,
-    }
+type TwoByteInputProps = typeof TwoByteInput.defaultProps & {
+    onChange: (val: number) => void;
+    value: number;
+};
+
+class TwoByteInput extends Component<TwoByteInputProps> {
     static defaultProps = {
         value: 0,
-        id: undefined,
-        className: undefined,
-    }
+        id: "",
+        className: "",
+    };
 
-    constructor(props) {
+    lastEmitted: number;
+    $inp?: HTMLInputElement;
+
+    constructor(props: TwoByteInputProps) {
         super(props);
 
         this.lastEmitted = props.value;
@@ -25,7 +26,7 @@ class TwoByteInput extends Component {
         this.onKeyDown = this.onKeyDown.bind(this);
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: TwoByteInputProps) {
         if (prevProps.value !== this.props.value) {
             if (this.$inp) {
                 if (this.props.value !== this.lastEmitted) {
@@ -36,51 +37,55 @@ class TwoByteInput extends Component {
         }
     }
 
-    onKeyDown(e) {
+    onKeyDown(e: KeyboardEvent) {
         let newValue;
-        if (e.keyCode === 40) { // ArrowDown
+        if (e.keyCode === 40) {
+            // ArrowDown
             newValue = this.lastEmitted - 1;
-        } else if (e.keyCode === 38) { // ArrowUp
+        } else if (e.keyCode === 38) {
+            // ArrowUp
             newValue = this.lastEmitted + 1;
         }
 
         if (newValue !== undefined) {
-            newValue = ((2 ** 8) + newValue) % (2 ** 8);
-            this.$inp.value = this.formatValue(newValue);
+            newValue = (2 ** 8 + newValue) % 2 ** 8;
+            if (this.$inp) {
+                this.$inp.value = this.formatValue(newValue);
+            }
             this.emit(newValue);
         }
     }
 
     onInputChange() {
+        if (!this.$inp) {
+            return;
+        }
         const value = this.formatInput(this.$inp.value);
         this.$inp.value = value;
         this.emit(fromHex(value));
     }
 
-    onInputBlur(event) {
+    onInputBlur(event: ChangeEvent<HTMLInputElement>) {
         const value = fromHex(this.formatInput(event.target.value));
-        this.$inp.value = this.formatValue(value);
+        if (this.$inp) {
+            this.$inp.value = this.formatValue(value);
+        }
         this.emit(value);
     }
 
-    emit(num) {
+    emit(num: number) {
         if (num !== this.lastEmitted) {
             this.props.onChange(num || 0);
             this.lastEmitted = num || 0;
         }
     }
 
-    /**
-     * Takes a hex string, strips non-hex characters and upper cases
-     * @param {String} inp
-     * @returns {String}
-     */
-    formatInput(inp) {
-        return inp.replace(/[^0-9a-f]/gi, "")
-            .toUpperCase();
+    /** Takes a hex string, strips non-hex characters and upper cases */
+    formatInput(inp: string) {
+        return inp.replace(/[^0-9a-f]/gi, "").toUpperCase();
     }
 
-    formatValue(num) {
+    formatValue(num: number) {
         return toHex(num);
     }
 
@@ -92,9 +97,14 @@ class TwoByteInput extends Component {
                 defaultValue={this.formatValue(this.props.value)}
                 onChange={this.onInputChange}
                 onBlur={this.onInputBlur}
-                onKeyDown={this.onKeyDown}
+                onKeyDown={this.onKeyDown as any}
                 id={this.props.id}
-                ref={(inp) => { this.$inp = inp; }}
+                ref={(inp) => {
+                    if (!inp) {
+                        return;
+                    }
+                    this.$inp = inp;
+                }}
                 maxLength={2}
             />
         );

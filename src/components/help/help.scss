@@ -7,7 +7,9 @@
     max-width: 50vw;
     min-width: 30ch;
 
-    .emulator > & { flex-shrink: 1; }
+    .emulator > & {
+        flex-shrink: 1;
+    }
 }
 .help {
     width: 100%;
@@ -18,21 +20,25 @@
     box-shadow: -2px 0 16px rgba($dark, 0.1);
     border-left: 1px solid mix($dark, $light, 25%);
 
-    animation: slide-in .2s ease-out;
-    
-    h1,h2,h3 {
+    animation: slide-in 0.2s ease-out;
+
+    h1,
+    h2,
+    h3 {
         text-align: center;
     }
-    
+
     table {
         max-width: 60ch;
     }
-    td:nth-child(-n+2), em {
+    td:nth-child(-n + 2),
+    em {
         text-align: right;
         font-style: normal;
         font-weight: bold;
     }
-    td,th {
+    td,
+    th {
         padding: 4px 8px;
         vertical-align: top;
     }
@@ -63,10 +69,16 @@
 
 @media (max-width: 912px) {
     .help-container,
-    .toolbar .btn-help { display: none; }
+    .toolbar .btn-help {
+        display: none;
+    }
 }
 
 @keyframes slide-in {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(0%); }
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
 }
