@@ -31,23 +31,24 @@ class RAM extends Component {
             const classNames = [
                 [
                     machine.highlights.inputs.ram.indexOf(i) !== -1
-                        ? "highlight-input" : "",
+                        ? "highlight-input"
+                        : "",
                     machine.highlights.outputs.ram.indexOf(i) !== -1
-                        ? "highlight-output" : "",
+                        ? "highlight-output"
+                        : "",
                 ].join(" "),
                 [
                     machine.highlights.inputs.ram.indexOf(i + 1) !== -1
-                        ? "highlight-input" : "",
+                        ? "highlight-input"
+                        : "",
                     machine.highlights.outputs.ram.indexOf(i + 1) !== -1
-                        ? "highlight-output" : "",
+                        ? "highlight-output"
+                        : "",
                 ].join(" "),
             ];
             cells.push(
                 <div
-                    className={[
-                        "row",
-                        isActive ? "is-active" : "",
-                    ].join(" ")}
+                    className={["row", isActive ? "is-active" : ""].join(" ")}
                     key={index}
                 >
                     <label htmlFor={`cell-${index}`} className="index">
@@ -67,7 +68,9 @@ class RAM extends Component {
                         type="text"
                         className="comment"
                         value={indexToComment(i)}
-                        onChange={e => this.onCommentChange(j, e.target.value)}
+                        onChange={(e) =>
+                            this.onCommentChange(j, e.target.value)
+                        }
                         tabIndex={-1}
                     />
                 </div>
@@ -77,11 +80,7 @@ class RAM extends Component {
     }
 
     render() {
-        return (
-            <section className="ram">
-                { this.generateCells() }
-            </section>
-        );
+        return <section className="ram">{this.generateCells()}</section>;
     }
 }
 

@@ -44,7 +44,9 @@ class CPU extends Component {
                             machine.highlights.outputs.cpu.indexOf(i) !== -1
                                 ? "highlight-output"
                                 : "",
-                        ].filter(Boolean).join(" ")}
+                        ]
+                            .filter(Boolean)
+                            .join(" ")}
                         id={id}
                         onChange={this.updateRegister.bind(this, i)} // eslint-disable-line
                         value={machine.cpu[i]}
@@ -73,9 +75,7 @@ class CPU extends Component {
                     />
                     <label htmlFor="program-counter">Program counter:</label>
                 </div>
-                <div className="registers">
-                    {this.generateRegisters()}
-                </div>
+                <div className="registers">{this.generateRegisters()}</div>
             </section>
         );
     }

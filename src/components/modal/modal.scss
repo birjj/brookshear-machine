@@ -2,8 +2,10 @@
 
 .modal {
     position: fixed;
-    top: 0; bottom: 0;
-    left: 0; right: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 
     background: $dark;
     z-index: 999;
@@ -29,9 +31,15 @@
         cursor: pointer;
         outline: none;
 
-        svg { width: 32px; height: 32px; }
+        svg {
+            width: 32px;
+            height: 32px;
+        }
 
-        &:active, &:focus { color: $highlight; }
+        &:active,
+        &:focus {
+            color: $highlight;
+        }
     }
 
     .submit {
@@ -58,7 +66,8 @@
         font-family: "Roboto Mono", monospace;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
-        &:active, &:focus {
+        &:active,
+        &:focus {
             border-color: $highlight;
         }
 

@@ -1,6 +1,5 @@
 import { observable, computed } from "mobx";
-import { toHex, fromHex, toBitString,
-    floatToHex, hexToFloat } from "./utils";
+import { toHex, fromHex, toBitString, floatToHex, hexToFloat } from "./utils";
 
 class BrookshearMachine {
     @observable speed = 5;
@@ -10,13 +9,11 @@ class BrookshearMachine {
     @observable showingModal = "";
     @observable cpu = Array(16).fill(0);
     @observable ram = Array(2 ** 8).fill(0);
-    @observable comments = Array((2 ** 8) / 2).fill(""); // only 1 comment per 2 ram places
+    @observable comments = Array(2 ** 8 / 2).fill(""); // only 1 comment per 2 ram places
     @observable messages = [];
     @computed get highlights() {
-        const command = this.getCommand(this.frame % (2 ** 8));
-        const parsed = [
-            ...command,
-        ].map(v => parseInt(v, 16));
+        const command = this.getCommand(this.frame % 2 ** 8);
+        const parsed = [...command].map((v) => parseInt(v, 16));
         const lastTwoParsed = parseInt(command.substr(2, 2), 16);
         switch (command[0]) {
             case "1":
@@ -74,7 +71,7 @@ class BrookshearMachine {
 
     getCommand(frame) {
         return [this.ram[frame], this.ram[frame + 1]]
-            .map(v => toHex(v || 0))
+            .map((v) => toHex(v || 0))
             .join("");
     }
 
@@ -104,96 +101,113 @@ class BrookshearMachine {
         } else if (opcode === "1") {
             this.cpu[register] = this.ram[ramTarget];
             this.messages = [
-                { text: `Copied from cell ${operands.substring(1)} to register ${operands[0]}` },
+                {
+                    text: `Copied from cell ${operands.substring(
+                        1
+                    )} to register ${operands[0]}`,
+                },
             ];
         } else if (opcode === "2") {
             this.cpu[register] = fromHex(operands.substr(1));
             this.messages = [
-                { text: `Set content of register ${operands[0]} to ${operands.substring(1)}` },
+                {
+                    text: `Set content of register ${
+                        operands[0]
+                    } to ${operands.substring(1)}`,
+                },
             ];
         } else if (opcode === "3") {
             this.ram[ramTarget] = this.cpu[register];
             this.messages = [
-                { text: `Copied from register ${operands[0]} to cell ${operands.substring(1)}` },
+                {
+                    text: `Copied from register ${
+                        operands[0]
+                    } to cell ${operands.substring(1)}`,
+                },
             ];
         } else if (opcode === "4") {
-            this.cpu[parseInt(operands[2], 16)] = this.cpu[parseInt(operands[1], 16)];
+            this.cpu[parseInt(operands[2], 16)] = this.cpu[
+                parseInt(operands[1], 16)
+            ];
             this.messages = [
-                { text: `Copied from register ${operands[1]} to register ${operands[2]}` },
+                {
+                    text: `Copied from register ${operands[1]} to register ${operands[2]}`,
+                },
             ];
         } else if (opcode === "5") {
-            this.cpu[register] = (
-                this.cpu[parseInt(operands[1], 16)]
-                + this.cpu[parseInt(operands[2], 16)]
-            ) % 256;
+            this.cpu[register] =
+                (this.cpu[parseInt(operands[1], 16)] +
+                    this.cpu[parseInt(operands[2], 16)]) %
+                256;
             this.messages = [
-                { text: `Added register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}` },
+                {
+                    text: `Added register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}`,
+                },
             ];
         } else if (opcode === "6") {
-            const floats = [1, 2].map(
-                v => hexToFloat(
-                    toHex(
-                        this.cpu[parseInt(operands[v], 16)]
-                    )
-                )
+            const floats = [1, 2].map((v) =>
+                hexToFloat(toHex(this.cpu[parseInt(operands[v], 16)]))
             );
-            this.cpu[register] = (
-                fromHex(floatToHex(floats[0] + floats[1]))
-            );
+            this.cpu[register] = fromHex(floatToHex(floats[0] + floats[1]));
             this.messages = [
-                { text: `Added register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}` },
+                {
+                    text: `Added register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}`,
+                },
             ];
         } else if (opcode === "7") {
             this.cpu[register] =
-                this.cpu[parseInt(operands[1], 16)] // eslint-disable-line no-bitwise
-                | this.cpu[parseInt(operands[2], 16)];
+                this.cpu[parseInt(operands[1], 16)] | // eslint-disable-line no-bitwise
+                this.cpu[parseInt(operands[2], 16)];
             this.messages = [
-                { text: `OR of register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}` },
+                {
+                    text: `OR of register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}`,
+                },
             ];
         } else if (opcode === "8") {
             this.cpu[register] =
-                this.cpu[parseInt(operands[1], 16)] // eslint-disable-line no-bitwise
-                & this.cpu[parseInt(operands[2], 16)];
+                this.cpu[parseInt(operands[1], 16)] & // eslint-disable-line no-bitwise
+                this.cpu[parseInt(operands[2], 16)];
             this.messages = [
-                { text: `AND of register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}` },
+                {
+                    text: `AND of register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}`,
+                },
             ];
         } else if (opcode === "9") {
             this.cpu[register] =
-                this.cpu[parseInt(operands[1], 16)] // eslint-disable-line no-bitwise
-                ^ this.cpu[parseInt(operands[2], 16)];
+                this.cpu[parseInt(operands[1], 16)] ^ // eslint-disable-line no-bitwise
+                this.cpu[parseInt(operands[2], 16)];
             this.messages = [
-                { text: `XOR of register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}` },
+                {
+                    text: `XOR of register ${operands[1]} and register ${operands[2]}, put result in register ${operands[0]}`,
+                },
             ];
         } else if (opcode === "A") {
             const bitstring = toBitString(this.cpu[register]);
             const offset = fromHex(operands[2]);
-            const rotated = bitstring.substr(-offset)
-                + bitstring.substr(0, (8 - offset) % 8);
+            const rotated =
+                bitstring.substr(-offset) +
+                bitstring.substr(0, (8 - offset) % 8);
 
             this.cpu[register] = fromHex(parseInt(rotated, 2).toString(16));
             this.messages = [
-                { text: `Rotated register ${operands[0]} ${operands[2]} places to the right` },
+                {
+                    text: `Rotated register ${operands[0]} ${operands[2]} places to the right`,
+                },
             ];
         } else if (opcode === "B") {
             if (this.cpu[register] === this.cpu[0]) {
                 this.frame = parseInt(operands.substr(1), 16);
-                this.messages = [
-                    { text: `Jumped to ${operands.substr(1)}` },
-                ];
+                this.messages = [{ text: `Jumped to ${operands.substr(1)}` }];
                 proceed = false;
             }
         } else if (opcode === "C") {
             this.playing = false;
-            this.messages = [
-                { text: "Halted" },
-            ];
+            this.messages = [{ text: "Halted" }];
             proceed = false;
         } else if (opcode === "D") {
             if (this.cpu[register] > this.cpu[0]) {
                 this.frame = parseInt(operands.substr(1), 16);
-                this.messages = [
-                    { text: `Jumped to ${operands.substr(1)}` },
-                ];
+                this.messages = [{ text: `Jumped to ${operands.substr(1)}` }];
                 proceed = false;
             }
         } else {
@@ -215,11 +229,8 @@ class BrookshearMachine {
         }
 
         const speed = this.speed;
-        setTimeout(
-            this.tick,
-            Math.max(1000 / speed, 60)
-        );
+        setTimeout(this.tick, Math.max(1000 / speed, 60));
     }
 }
 
-export default (new BrookshearMachine());
+export default new BrookshearMachine();

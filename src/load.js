@@ -8,20 +8,15 @@ if (existingData) {
     const oldProgram = localStorage.getItem("brookshear");
     if (oldProgram) {
         const program = JSON.parse(oldProgram);
-        Object.keys(program)
-            .forEach(
-                (key) => {
-                    const val = program[key];
-                    if (val instanceof Array) {
-                        val.forEach(
-                            (v, i) => {
-                                machine[key][i] = v;
-                            }
-                        );
-                    } else {
-                        machine[key] = val;
-                    }
-                }
-            );
+        Object.keys(program).forEach((key) => {
+            const val = program[key];
+            if (val instanceof Array) {
+                val.forEach((v, i) => {
+                    machine[key][i] = v;
+                });
+            } else {
+                machine[key] = val;
+            }
+        });
     }
 }

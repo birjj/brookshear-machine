@@ -42,12 +42,12 @@ class Toolbar extends Component {
                     confirmButtonColor: "#d33",
                     confirmButtonText: "Reset",
                     showCancelButton: true,
-                }).then(
-                    () => {
+                })
+                    .then(() => {
                         machine.ram.fill(0);
                         machine.comments.fill("");
-                    }
-                ).catch(() => {});
+                    })
+                    .catch(() => {});
                 break;
             case "help":
                 machine.showingHelp = !machine.showingHelp;
@@ -88,7 +88,9 @@ class Toolbar extends Component {
                     min="0.25"
                     max="10"
                     step="0.1"
-                    ref={(inp) => { this.$playSpeed = inp; }}
+                    ref={(inp) => {
+                        this.$playSpeed = inp;
+                    }}
                     defaultValue={`${machine.speed}`}
                     onChange={this.onPlaySpeed}
                 />
@@ -100,19 +102,17 @@ class Toolbar extends Component {
     renderFiller() {
         return (
             <div key="filler" className="filler warning">
-                { machine.messages.map(
-                    msg => (
-                        <span key={msg.text} className={msg.type}>
-                            { msg.type === "error"
-                                ? (<Icon icon="alert" />)
-                                : undefined }
-                            { msg.type === "loader"
-                                ? (<Icon icon="load" />)
-                                : undefined }
-                            { msg.text }
-                        </span>
-                    )
-                ) }
+                {machine.messages.map((msg) => (
+                    <span key={msg.text} className={msg.type}>
+                        {msg.type === "error" ? (
+                            <Icon icon="alert" />
+                        ) : undefined}
+                        {msg.type === "loader" ? (
+                            <Icon icon="load" />
+                        ) : undefined}
+                        {msg.text}
+                    </span>
+                ))}
             </div>
         );
     }
@@ -127,13 +127,13 @@ class Toolbar extends Component {
         return (
             <button
                 key={btn.icon}
-                className={`btn-${btn.icon} ${btn.separator ? "separator" : ""}`}
+                className={`btn-${btn.icon} ${
+                    btn.separator ? "separator" : ""
+                }`}
                 onClick={() => this.onAction(btn.icon)}
             >
                 <Icon icon={btn.icon} />
-                { btn.text ? (
-                    <span>{btn.text}</span>
-                ) : undefined}
+                {btn.text ? <span>{btn.text}</span> : undefined}
             </button>
         );
     }
@@ -144,39 +144,31 @@ class Toolbar extends Component {
         }
 
         const elements = [
-            ...([
+            ...[
                 { text: "Reset RAM", icon: "delete" },
                 { text: "Import", icon: "import" },
                 { text: "Export", icon: "export", separator: true },
                 { text: "Reset CPU", icon: "reset" },
-                (machine.playing ?
-                    { text: "Pause", icon: "pause" }
-                    : { text: "Play", icon: "play" }),
+                machine.playing
+                    ? { text: "Pause", icon: "pause" }
+                    : { text: "Play", icon: "play" },
                 this.renderPlaySpeed(),
                 { text: "Step", icon: "step" },
                 this.renderFiller(),
-                { text: (machine.showingHelp ? "Hide" : "Help"), icon: "help" },
-                (
-                    <a
-                        className="btn-github"
-                        key="github"
-                        href="https://github.com/birjolaxew/brookshear-machine"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <Icon icon="github" />
-                    </a>
-                ),
-            ].map(
-                v => (React.isValidElement(v) ? v : this.renderButton(v))
-            )),
+                { text: machine.showingHelp ? "Hide" : "Help", icon: "help" },
+                <a
+                    className="btn-github"
+                    key="github"
+                    href="https://github.com/birjolaxew/brookshear-machine"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <Icon icon="github" />
+                </a>,
+            ].map((v) => (React.isValidElement(v) ? v : this.renderButton(v))),
         ];
 
-        return (
-            <section className="toolbar">
-                { elements }
-            </section>
-        );
+        return <section className="toolbar">{elements}</section>;
     }
 }
 

@@ -9,12 +9,12 @@ class TwoByteInput extends Component {
         value: PropTypes.number,
         id: PropTypes.string,
         className: PropTypes.string,
-    }
+    };
     static defaultProps = {
         value: 0,
         id: undefined,
         className: undefined,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -38,14 +38,16 @@ class TwoByteInput extends Component {
 
     onKeyDown(e) {
         let newValue;
-        if (e.keyCode === 40) { // ArrowDown
+        if (e.keyCode === 40) {
+            // ArrowDown
             newValue = this.lastEmitted - 1;
-        } else if (e.keyCode === 38) { // ArrowUp
+        } else if (e.keyCode === 38) {
+            // ArrowUp
             newValue = this.lastEmitted + 1;
         }
 
         if (newValue !== undefined) {
-            newValue = ((2 ** 8) + newValue) % (2 ** 8);
+            newValue = (2 ** 8 + newValue) % 2 ** 8;
             this.$inp.value = this.formatValue(newValue);
             this.emit(newValue);
         }
@@ -76,8 +78,7 @@ class TwoByteInput extends Component {
      * @returns {String}
      */
     formatInput(inp) {
-        return inp.replace(/[^0-9a-f]/gi, "")
-            .toUpperCase();
+        return inp.replace(/[^0-9a-f]/gi, "").toUpperCase();
     }
 
     formatValue(num) {
@@ -94,7 +95,9 @@ class TwoByteInput extends Component {
                 onBlur={this.onInputBlur}
                 onKeyDown={this.onKeyDown}
                 id={this.props.id}
-                ref={(inp) => { this.$inp = inp; }}
+                ref={(inp) => {
+                    this.$inp = inp;
+                }}
                 maxLength={2}
             />
         );

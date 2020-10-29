@@ -7,21 +7,15 @@ import "./cell/cell.css";
 /** @augments {Component<{ids: string[], values: number[]}, {}>} */
 class Cell extends Component {
     static propTypes = {
-        ids: PropTypes.arrayOf(
-            PropTypes.string
-        ),
-        values: PropTypes.arrayOf(
-            PropTypes.number
-        ).isRequired,
-        classNames: PropTypes.arrayOf(
-            PropTypes.string
-        ),
+        ids: PropTypes.arrayOf(PropTypes.string),
+        values: PropTypes.arrayOf(PropTypes.number).isRequired,
+        classNames: PropTypes.arrayOf(PropTypes.string),
         onChange: PropTypes.func.isRequired,
-    }
+    };
     static defaultProps = {
         ids: [undefined, undefined],
         classNames: ["", ""],
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -39,31 +33,27 @@ class Cell extends Component {
             return true;
         }
 
-        if (nextProps.classNames.some(
-            (v, i) => this.props.classNames[i] !== v
-        )) {
+        if (
+            nextProps.classNames.some((v, i) => this.props.classNames[i] !== v)
+        ) {
             return true;
         }
 
-        if (nextProps.values.some(
-            (v, i) => this.lastEmitted[i] !== v
-        )) {
+        if (nextProps.values.some((v, i) => this.lastEmitted[i] !== v)) {
             return true;
         }
         return false;
     }
 
     componentDidUpdate(prevProps) {
-        this.props.values.forEach(
-            (v, i) => {
-                if (prevProps.values[i] !== v) {
-                    if (this.lastEmitted[i] !== v) {
-                        this.$inps[i].value = this.formatValue(v);
-                        this.lastEmitted[i] = v;
-                    }
+        this.props.values.forEach((v, i) => {
+            if (prevProps.values[i] !== v) {
+                if (this.lastEmitted[i] !== v) {
+                    this.$inps[i].value = this.formatValue(v);
+                    this.lastEmitted[i] = v;
                 }
             }
-        );
+        });
     }
 
     onInput(index, val) {
@@ -99,8 +89,7 @@ class Cell extends Component {
      * @returns {String}
      */
     formatInput(inp) {
-        return inp.replace(/[^0-9a-f]/gi, "")
-            .toUpperCase();
+        return inp.replace(/[^0-9a-f]/gi, "").toUpperCase();
     }
 
     formatValue(num) {
@@ -118,10 +107,12 @@ class Cell extends Component {
                     type="text"
                     id={this.props.ids[0]}
                     defaultValue={toHex(this.props.values[0])}
-                    onChange={e => this.onInput(0, e.target.value)}
+                    onChange={(e) => this.onInput(0, e.target.value)}
                     onFocus={() => this.setState({ focused: true })}
                     onBlur={() => this.onInputBlur(0)}
-                    ref={(inp) => { this.$inps[0] = inp; }}
+                    ref={(inp) => {
+                        this.$inps[0] = inp;
+                    }}
                     maxLength={2}
                 />
                 <input
@@ -132,10 +123,12 @@ class Cell extends Component {
                     type="text"
                     id={this.props.ids[1]}
                     defaultValue={toHex(this.props.values[1])}
-                    onChange={e => this.onInput(1, e.target.value)}
+                    onChange={(e) => this.onInput(1, e.target.value)}
                     onFocus={() => this.setState({ focused: true })}
                     onBlur={() => this.onInputBlur(1)}
-                    ref={(inp) => { this.$inps[1] = inp; }}
+                    ref={(inp) => {
+                        this.$inps[1] = inp;
+                    }}
                     maxLength={2}
                 />
             </div>

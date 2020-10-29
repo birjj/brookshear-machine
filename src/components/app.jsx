@@ -20,13 +20,17 @@ class App extends Component {
     render() {
         return (
             <div className="app">
-                { machine.showingModal === "import" ? <ImportModal /> : undefined }
-                { machine.showingModal === "export" ? <ExportModal /> : undefined }
+                {machine.showingModal === "import" ? (
+                    <ImportModal />
+                ) : undefined}
+                {machine.showingModal === "export" ? (
+                    <ExportModal />
+                ) : undefined}
                 <Toolbar />
                 <section className="emulator">
                     <CPU />
                     <RAM />
-                    { machine.showingHelp ? <Help /> : undefined }
+                    {machine.showingHelp ? <Help /> : undefined}
                 </section>
             </div>
         );

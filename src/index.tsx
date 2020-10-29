@@ -6,7 +6,6 @@ import App from "./components/app";
 import machine from "./machine";
 import "./load";
 import { importData, exportData } from "./utils";
-import registerServiceWorker from "./registerServiceWorker";
 
 // handle our URL updating
 if (history && history.replaceState) {
@@ -68,4 +67,3 @@ ReactDOM.render(
     <App />, // eslint-disable-line
     document.getElementById("root")
 );
-registerServiceWorker();

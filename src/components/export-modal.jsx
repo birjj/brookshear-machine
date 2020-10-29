@@ -13,7 +13,11 @@ class ExportModal extends Component {
         let outp = "";
         for (let i = 0; i < machine.ram.length; i += 2) {
             outp += "\n";
-            if (machine.ram[i] || machine.ram[i + 1] || machine.comments[i / 2]) {
+            if (
+                machine.ram[i] ||
+                machine.ram[i + 1] ||
+                machine.comments[i / 2]
+            ) {
                 outp += toHex(machine.ram[i]) + toHex(machine.ram[i + 1]);
             }
             if (machine.comments[i / 2]) {
@@ -29,17 +33,19 @@ class ExportModal extends Component {
                 <div className="container">
                     <button
                         className="close"
-                        onClick={() => { machine.showingModal = ""; }}
+                        onClick={() => {
+                            machine.showingModal = "";
+                        }}
                     >
                         <Icon icon="close" />
                     </button>
-                    <p>You can share the URL of this page.<br />
-                        Alternatively, copy the below code.
-                        You can later import it using the import button:</p>
-                    <textarea
-                        readOnly
-                        value={exportData(false)}
-                    />
+                    <p>
+                        You can share the URL of this page.
+                        <br />
+                        Alternatively, copy the below code. You can later import
+                        it using the import button:
+                    </p>
+                    <textarea readOnly value={exportData(false)} />
                 </div>
             </div>
         );
