@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 
-import "./help/help.css";
+import "./help/help.scss";
 
-/** @augments {Component<{}, {}>} */
-class Help extends Component {
+class Help extends Component<{}, {}> {
     generateTable() {
         const operations = [
             /* 1 */ [

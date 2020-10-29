@@ -1,5 +1,5 @@
+import { PropTypes } from "mobx-react";
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 const icons = {
     delete: (
@@ -61,25 +61,11 @@ const icons = {
     ),
 };
 
-/** @augments {Component<{icon: string}, {}>} */
-class Icon extends Component {
-    static propTypes = {
-        icon: PropTypes.oneOf([
-            "reset",
-            "play",
-            "step",
-            "pause",
-            "delete",
-            "import",
-            "export",
-            "help",
-            "github",
-            "alert",
-            "load",
-            "close",
-        ]).isRequired,
-    };
+export type IconProps = {
+    icon: keyof typeof icons;
+};
 
+class Icon extends Component<IconProps> {
     render() {
         return (
             <svg

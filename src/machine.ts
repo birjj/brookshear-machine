@@ -1,17 +1,28 @@
 import { observable, computed, makeObservable } from "mobx";
 import { toHex, fromHex, toBitString, floatToHex, hexToFloat } from "./utils";
 
+type Message = {
+    text: string;
+    type?: "error" | "loader";
+};
+type Highlight = {
+    inputs: { cpu: number[]; ram: number[] };
+    outputs: { cpu: number[]; ram: number[] };
+};
+
 class BrookshearMachine {
     speed = 5;
     playing = false;
     frame = 0;
     showingHelp = false;
     showingModal = "";
-    cpu = Array(16).fill(0);
-    ram = Array(2 ** 8).fill(0);
-    comments = Array(2 ** 8 / 2).fill(""); // only 1 comment per 2 ram places
-    messages = [];
-    get highlights() {
+    cpu: number[] = Array(16).fill(0);
+    ram: number[] = Array(2 ** 8).fill(0);
+    comments: string[] = Array(2 ** 8 / 2).fill(""); // only 1 comment per 2 ram places
+    messages: Message[] = [];
+    warning?: string;
+
+    get highlights(): Highlight {
         const command = this.getCommand(this.frame % 2 ** 8);
         const parsed = [...command].map((v) => parseInt(v, 16));
         const lastTwoParsed = parseInt(command.substr(2, 2), 16);
@@ -75,14 +86,14 @@ class BrookshearMachine {
             ram: observable,
             comments: observable,
             messages: observable,
-            highlights: computed
+            highlights: computed,
         });
 
         this.execute = this.execute.bind(this);
         this.tick = this.tick.bind(this);
     }
 
-    getCommand(frame) {
+    getCommand(frame: number) {
         return [this.ram[frame], this.ram[frame + 1]]
             .map((v) => toHex(v || 0))
             .join("");

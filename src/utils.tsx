@@ -1,10 +1,8 @@
 import LZString from "lz-string";
 import machine from "./machine";
 
-/**
- * Given a value, returns the 8-bit string that represents it as a positive integer
- */
-export function toBitString(value, minBytes = 2) {
+/** Given a value, returns the 8-bit string that represents it as a positive integer */
+export function toBitString(value: number, minBytes = 2) {
     if (value < 0 || value > 255) {
         console.warn("Attempted to convert out-of-bounds value", value); // eslint-disable-line no-console
     }
@@ -14,10 +12,8 @@ export function toBitString(value, minBytes = 2) {
         .substr(-8);
 }
 
-/**
- * Given a value, returns the hex that represents it as a positive integer
- */
-export function toHex(value, minLen = 2) {
+/** Given a value, returns the hex that represents it as a positive integer */
+export function toHex(value: number, minLen = 2) {
     if (value < 0 || value > 255) {
         console.warn("Attempted to convert out-of-bounds value", value); // eslint-disable-line no-console
     }
@@ -29,20 +25,16 @@ export function toHex(value, minLen = 2) {
     return outp.toUpperCase();
 }
 
-/**
- * Given a hex string, returns the positive integer it represents
- */
-export function fromHex(str) {
+/** Given a hex string, returns the positive integer it represents */
+export function fromHex(str: string) {
     if (str.length > 2) {
         console.warn("Attempted to convert out-of-bounds string", str); // eslint-disable-line no-console
     }
     return parseInt(str, 16) || 0;
 }
 
-/**
- * Given a hex string, returns its value interpreted as float
- */
-export function hexToFloat(hex) {
+/** Given a hex string, returns its value interpreted as float */
+export function hexToFloat(hex: string) {
     const str = toBitString(fromHex(hex));
     const sign = str[0] === "1" ? -1 : 1;
     const exp = parseInt(str.substr(1, 3), 2) - 2 ** 2;
@@ -50,15 +42,13 @@ export function hexToFloat(hex) {
     return (
         [...mantisse].reduce((p, v, i) => {
             const factor = 2 ** (exp - i);
-            return p + factor * v;
+            return p + factor * +v;
         }, 0) * sign
     );
 }
 
-/**
- * Given a value, returns its hex string float representation
- */
-export function floatToHex(value) {
+/** Given a value, returns its hex string float representation */
+export function floatToHex(value: number) {
     const decimalStr = Math.abs(value).toString(2);
     const first1 = decimalStr.indexOf("1");
     const dot = decimalStr.indexOf(".");
@@ -76,12 +66,8 @@ export function floatToHex(value) {
     return toHex(parseInt(bitstring, 2));
 }
 
-/**
- * Given two values (in total a byte), returns an auto-generated comment for them
- * @param {Array<Number>} values
- * @returns {String}
- */
-export function byteToComment(values) {
+/** Given two values (in total a byte), returns an auto-generated comment for them */
+export function byteToComment(values: number[]) {
     const str = values.map((v) => toHex(v)).join("");
 
     switch (str[0]) {
@@ -120,12 +106,8 @@ export function byteToComment(values) {
     }
 }
 
-/**
- * Given the index of the first of two values, returns the comment for them
- * @param {Number} index
- * @returns {String}
- */
-export function indexToComment(index) {
+/** Given the index of the first of two values, returns the comment for them */
+export function indexToComment(index: number) {
     const ownComment = machine.comments[Math.floor(index / 2)];
     if (ownComment) {
         return ownComment;
@@ -133,12 +115,8 @@ export function indexToComment(index) {
     return byteToComment([machine.ram[index], machine.ram[index + 1]]);
 }
 
-/**
- * Given a string, loads it into RAM
- * @param {String} data  The data to load
- * @param {Boolean} compressed Whether the data is compressed
- */
-export function importData(data, compressed) {
+/** Given a string, loads it into RAM */
+export function importData(data: string, compressed: boolean) {
     let formattedData = data;
     if (compressed) {
         formattedData = LZString.decompressFromEncodedURIComponent(data);
@@ -165,12 +143,8 @@ export function importData(data, compressed) {
     });
 }
 
-/**
- * Exports the RAM to a string
- * @param {Boolean} compressed  Whether the string should be compressed
- * @returns {String}
- */
-export function exportData(compressed) {
+/** Exports the RAM to a string */
+export function exportData(compressed: boolean) {
     let outp = "";
     for (let i = 0; i < machine.ram.length; i += 2) {
         outp += toHex(machine.ram[i]) + toHex(machine.ram[i + 1]);

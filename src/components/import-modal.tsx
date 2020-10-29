@@ -2,13 +2,18 @@ import React, { Component } from "react";
 
 import machine from "../machine";
 import Icon from "./icon";
-import "./modal/modal.css";
+import "./modal/modal.scss";
 import { fromHex } from "../utils";
 
-/** @augments {Component<{onSubmit: function}, {}>} */
-class ImportModal extends Component {
+type ImportModalProps = {
+    onSubmit?: () => {};
+};
+
+class ImportModal extends Component<ImportModalProps> {
+    $inp?: HTMLTextAreaElement;
+
     import() {
-        const values = this.$inp.value;
+        const values = this.$inp?.value || "";
         const lines = values.split("\n");
         machine.comments.fill("");
         lines.forEach((v, i) => {
@@ -37,7 +42,7 @@ class ImportModal extends Component {
                     <textarea
                         autoFocus // eslint-disable-line jsx-a11y/no-autofocus
                         ref={(inp) => {
-                            this.$inp = inp;
+                            this.$inp = inp || undefined;
                         }}
                     />
                     <button className="submit" onClick={() => this.import()}>

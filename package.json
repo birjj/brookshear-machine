@@ -13,27 +13,28 @@
     "dependencies": {
         "lz-string": "^1.4.4",
         "mobx": "^6.0.1",
-        "mobx-react-lite": "^3.0.1",
+        "mobx-react": "^7.0.0",
+        "parcel": "^1.12.4",
         "react": "16",
-        "react-dom": "16"
+        "react-dom": "16",
+        "sweetalert2": "^10.8.1"
     },
     "devDependencies": {
         "@types/jest": "^26.0.15",
-        "@types/react": "^16.9.55",
-        "@types/react-dom": "^16.9.9",
+        "@types/react": "16",
+        "@types/react-dom": "16",
         "commitizen": "^4.2.2",
         "cz-conventional-changelog": "^3.3.0",
-        "estrella": "^1.2.10",
         "husky": "^4.3.0",
         "lint-staged": "^10.5.0",
         "prettier": "^2.1.2",
+        "sass": "^1.27.1",
         "semantic-release": "^17.2.1",
-        "serve-http": "^1.0.6",
         "typescript": "^4.0.5"
     },
     "scripts": {
-        "dev": "node scripts/build.js -w",
-        "build": "node scripts/build.js"
+        "dev": "parcel src/index.html --open",
+        "build": "parcel build src/index.html"
     },
     "husky": {
         "hooks": {
