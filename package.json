@@ -10,19 +10,27 @@
     },
     "version": "0.1.0",
     "private": true,
+    "dependencies": {
+        "lz-string": "^1.4.4",
+        "mobx": "^6.0.1",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1"
+    },
     "devDependencies": {
         "commitizen": "^4.2.2",
         "cz-conventional-changelog": "^3.3.0",
+        "estrella": "^1.2.10",
         "husky": "^4.3.0",
         "lint-staged": "^10.5.0",
-        "parcel": "^2.0.0-beta.1",
+        "mobx-react-lite": "^3.0.1",
         "prettier": "^2.1.2",
         "semantic-release": "^17.2.1",
+        "serve-http": "^1.0.6",
         "typescript": "^4.0.5"
     },
     "scripts": {
-        "dev": "parcel index.html --open",
-        "build": "parcel build index.html"
+        "dev": "node scripts/build.js -w",
+        "build": "node scripts/build.js"
     },
     "husky": {
         "hooks": {
