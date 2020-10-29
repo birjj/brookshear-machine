@@ -10,8 +10,7 @@ import ImportModal from "./import-modal";
 import ExportModal from "./export-modal";
 import "./app/app.css";
 
-@observer
-class App extends Component {
+const App = observer(class App extends Component {
     constructor(props) {
         super(props);
 
@@ -35,6 +34,6 @@ class App extends Component {
             </div>
         );
     }
-}
+});
 
 export default App;

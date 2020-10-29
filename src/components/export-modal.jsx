@@ -7,8 +7,7 @@ import "./modal/modal.css";
 import { toHex, exportData } from "../utils";
 
 /** @augments {Component<{}, {}>} */
-@observer
-class ExportModal extends Component {
+const ExportModal = observer(class ExportModal extends Component {
     formatValue() {
         let outp = "";
         for (let i = 0; i < machine.ram.length; i += 2) {
@@ -50,6 +49,6 @@ class ExportModal extends Component {
             </div>
         );
     }
-}
+});
 
 export default ExportModal;

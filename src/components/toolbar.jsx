@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
-import { action } from "mobx";
+import { action, makeObservable } from "mobx";
 import swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.css";
 import Icon from "./icon";
@@ -8,15 +8,18 @@ import machine from "../machine";
 import "./toolbar/toolbar.css";
 
 /** @augments {Component<{}, {}>} */
-@observer
-class Toolbar extends Component {
+const Toolbar = observer(class Toolbar extends Component {
     constructor(props) {
         super(props);
+
+        makeObservable(this, {
+            onAction: action,
+            onPlaySpeed: action
+        });
 
         this.onPlaySpeed = this.onPlaySpeed.bind(this);
     }
 
-    @action
     onAction(name) {
         switch (name) {
             case "play":
@@ -63,7 +66,6 @@ class Toolbar extends Component {
         }
     }
 
-    @action
     onPlaySpeed(event) {
         const value = +event.target.value;
         this.playSpeed = value;
@@ -170,6 +172,6 @@ class Toolbar extends Component {
 
         return <section className="toolbar">{elements}</section>;
     }
-}
+});
 
 export default Toolbar;

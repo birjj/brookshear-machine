@@ -1,17 +1,17 @@
-import { observable, computed } from "mobx";
+import { observable, computed, makeObservable } from "mobx";
 import { toHex, fromHex, toBitString, floatToHex, hexToFloat } from "./utils";
 
 class BrookshearMachine {
-    @observable speed = 5;
-    @observable playing = false;
-    @observable frame = 0;
-    @observable showingHelp = false;
-    @observable showingModal = "";
-    @observable cpu = Array(16).fill(0);
-    @observable ram = Array(2 ** 8).fill(0);
-    @observable comments = Array(2 ** 8 / 2).fill(""); // only 1 comment per 2 ram places
-    @observable messages = [];
-    @computed get highlights() {
+    speed = 5;
+    playing = false;
+    frame = 0;
+    showingHelp = false;
+    showingModal = "";
+    cpu = Array(16).fill(0);
+    ram = Array(2 ** 8).fill(0);
+    comments = Array(2 ** 8 / 2).fill(""); // only 1 comment per 2 ram places
+    messages = [];
+    get highlights() {
         const command = this.getCommand(this.frame % 2 ** 8);
         const parsed = [...command].map((v) => parseInt(v, 16));
         const lastTwoParsed = parseInt(command.substr(2, 2), 16);
@@ -65,6 +65,19 @@ class BrookshearMachine {
     }
 
     constructor() {
+        makeObservable(this, {
+            speed: observable,
+            playing: observable,
+            frame: observable,
+            showingHelp: observable,
+            showingModal: observable,
+            cpu: observable,
+            ram: observable,
+            comments: observable,
+            messages: observable,
+            highlights: computed
+        });
+
         this.execute = this.execute.bind(this);
         this.tick = this.tick.bind(this);
     }

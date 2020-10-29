@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
-import { action } from "mobx";
+import { action, makeObservable } from "mobx";
 
 import machine from "../machine";
 import TwoByte from "./two-byte-inp";
@@ -8,10 +8,15 @@ import "./cpu/cpu.css";
 import { toHex } from "../utils";
 
 /** @augments {Component<{}, {}>} */
-@observer
-class CPU extends Component {
+const CPU = observer(class CPU extends Component {
     constructor(props) {
         super(props);
+
+        makeObservable(this, {
+            onFrameInput: action,
+            updateRegister: action
+        });
+
         this.onFrameInput = this.onFrameInput.bind(this);
     }
 
@@ -19,13 +24,11 @@ class CPU extends Component {
      * Updates the frame value based on an input
      * @param {Number} value
      */
-    @action
     onFrameInput(value) {
         this.lastEmittedFrame = value;
         machine.frame = Math.floor(value / 2) * 2;
     }
 
-    @action
     updateRegister(num, val) {
         machine.cpu[num] = val;
     }
@@ -79,6 +82,6 @@ class CPU extends Component {
             </section>
         );
     }
-}
+});
 
 export default CPU;

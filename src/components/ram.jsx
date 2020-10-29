@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
-import { action } from "mobx";
+import { action, makeObservable } from "mobx";
 
 import "./ram/ram.css";
 import machine from "../machine";
@@ -8,15 +8,21 @@ import Cell from "./cell";
 import { indexToComment } from "../utils";
 
 /** @augments {Component<{}, {}>} */
-@observer
-class RAM extends Component {
-    @action
+const RAM = observer(class RAM extends Component {
+    constructor(props) {
+        super(props);
+
+        makeObservable(this, {
+            onRamChange: action,
+            onCommentChange: action
+        });
+    }
+
     onRamChange(i, val) {
         machine.ram[i] = val[0];
         machine.ram[i + 1] = val[1];
     }
 
-    @action
     onCommentChange(i, val) {
         machine.comments[i / 2] = val;
     }
@@ -82,6 +88,6 @@ class RAM extends Component {
     render() {
         return <section className="ram">{this.generateCells()}</section>;
     }
-}
+});
 
 export default RAM;
