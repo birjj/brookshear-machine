@@ -1,5 +1,12 @@
 import { observable, computed, makeObservable } from "mobx";
-import { toHex, fromHex, toBitString, floatToHex, hexToFloat } from "./utils";
+import {
+    toHex,
+    fromHex,
+    toBitString,
+    floatToHex,
+    hexToFloat,
+    fromTwosComplement,
+} from "./utils";
 
 type Message = {
     text: string;
@@ -229,7 +236,9 @@ class BrookshearMachine {
             this.messages = [{ text: "Halted" }];
             proceed = false;
         } else if (opcode === "D") {
-            if (this.cpu[register] > this.cpu[0]) {
+            const a = fromTwosComplement(toHex(this.cpu[register]));
+            const b = fromTwosComplement(toHex(this.cpu[0]));
+            if (a > b) {
                 this.frame = parseInt(operands.substr(1), 16);
                 this.messages = [{ text: `Jumped to ${operands.substr(1)}` }];
                 proceed = false;

@@ -47,6 +47,15 @@ export function hexToFloat(hex: string) {
     );
 }
 
+/** Given a hex string, returns its value as an integer, interpreted in two's complement */
+export function fromTwosComplement(str: string) {
+    const val = parseInt(str, 16);
+    if (val >= 128) {
+        return val - 256;
+    }
+    return val;
+}
+
 /** Given a value, returns its hex string float representation */
 export function floatToHex(value: number) {
     const decimalStr = Math.abs(value).toString(2);
@@ -119,7 +128,9 @@ export function indexToComment(index: number) {
 export function importData(data: string, compressed: boolean) {
     let formattedData = data;
     if (compressed) {
-        formattedData = LZString.decompressFromEncodedURIComponent(data);
+        formattedData = LZString.decompressFromEncodedURIComponent(
+            data
+        ) as string;
     }
 
     // insert newlines as needed
