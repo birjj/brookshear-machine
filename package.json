@@ -14,12 +14,12 @@
         "lz-string": "^1.4.4",
         "mobx": "^6.0.1",
         "mobx-react": "^7.0.0",
-        "parcel": "^2.10.0",
         "react": "16",
         "react-dom": "16",
         "sweetalert2": "^10.8.1"
     },
     "devDependencies": {
+        "parcel": "^2.10.0",
         "@parcel/transformer-sass": "2.10.0",
         "@semantic-release/git": "^9.0.0",
         "@types/jest": "^26.0.15",
