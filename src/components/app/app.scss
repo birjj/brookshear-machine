@@ -99,7 +99,8 @@ input[type="range"] {
         border: none;
     }
 
-    &::-webkit-slider-runnable-track {
+    &::-webkit-slider-runnable-track,
+    &::-moz-range-track {
         height: 2px;
         border-radius: 2px;
         background: mix($light, $dark, 25%);
