@@ -28,6 +28,7 @@
         "lint-staged": "^10.5.0",
         "parcel": "^2.10.0",
         "prettier": "^2.1.2",
+        "process": "^0.11.10",
         "sass": "^1.27.1",
         "typescript": "^4.0.5"
     },
