@@ -67,7 +67,10 @@ const Toolbar = observer(
                         confirmButtonText: "Reset",
                         showCancelButton: true,
                     } as SweetAlertOptions)
-                        .then(() => {
+                        .then((result) => {
+                            if (result && result.isDismissed) {
+                                return;
+                            }
                             machine.ram.fill(0);
                             machine.comments.fill("");
                         })
