@@ -257,12 +257,22 @@ class BrookshearMachine {
     }
 
     tick() {
+        // super ugly hack to increase speed limit, needed since this was written a long time ago
+        // we don't want to give MobX more work to do than necessary, so we only let it run every 50ms
+        // if our speed is faster than that, we need to do multiple executions per tick
+        const tickDuration = Math.max(1000 / this.speed, 50);
+        const executionDuration = 1000 / (this.speed || 0.1);
+        let executed = 0;
+        let i = 0;
         if (this.playing) {
-            this.execute();
+            while (executed < tickDuration) {
+                this.execute();
+                executed += executionDuration;
+                ++i;
+            }
         }
 
-        const speed = this.speed;
-        setTimeout(this.tick, Math.max(1000 / speed, 60));
+        setTimeout(this.tick, tickDuration);
     }
 }
 

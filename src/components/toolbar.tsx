@@ -6,6 +6,7 @@ import "sweetalert2/dist/sweetalert2.css";
 import Icon, { IconProps } from "./icon";
 import machine from "../machine";
 import "./toolbar/toolbar.scss";
+import ExponentialSliderInput from "./exponential-slider";
 
 type ToolbarAction =
     | "play"
@@ -90,43 +91,29 @@ const Toolbar = observer(
             }
         }
 
-        onPlaySpeed(event: ChangeEvent<HTMLInputElement>) {
-            const value = +event.target.value;
+        onPlaySpeed(value: number) {
             this.playSpeed = value;
             machine.speed = value;
         }
 
         updatePlaySpeed(value: number) {
-            if (this.$playSpeed) {
-                this.$playSpeed.value = value.toString();
-            }
+            this.playSpeed = value;
         }
 
         renderPlaySpeed() {
-            if (this.playSpeed$) {
-                return this.playSpeed$;
-            }
-
-            this.playSpeed$ = (
+            return (
                 <div key="play-speed" className="play-speed">
-                    <input
-                        type="range"
-                        min="0.25"
-                        max="10"
-                        step="0.1"
-                        ref={(inp) => {
-                            if (!inp) {
-                                return;
-                            }
-                            this.$playSpeed = inp;
-                        }}
-                        defaultValue={`${machine.speed}`}
+                    <ExponentialSliderInput
+                        min={1}
+                        max={100}
+                        exponent={5}
+                        step={0.01}
+                        value={this.playSpeed}
                         onChange={this.onPlaySpeed}
                     />
-                    <span>Play speed</span>
+                    <span>Play speed ({Math.round(this.playSpeed).toFixed(0)} IPS)</span>
                 </div>
             );
-            return this.playSpeed$;
         }
         renderFiller() {
             return (
